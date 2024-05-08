@@ -1,0 +1,87 @@
+[tool.poetry]
+name = "megabot"
+version = "0.0.1"
+description = "MegaBot telegram template"
+authors = ["Mikhail Khromov <khromov05@gmail.com>", "Igor Kuzmenkov <tkdomigor@gmail.com"]
+
+
+[tool.ruff]
+line-length = 88
+
+# Enable Pyflakes `E` and `F` codes by default.
+select = [
+    # Pyflakes
+    "F",
+    # Pycodestyle
+    "E",
+    "W",
+    # isort
+    "I001",
+]
+ignore = []
+
+# Exclude a variety of commonly ignored directories.
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".hg",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "venv",
+]
+per-file-ignores = { }
+
+# Allow unused variables when underscore-prefixed.
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+# Assume Python 3.11.
+target-version = "py311"
+
+[tool.ruff.mccabe]
+# Unlike Flake8, default to a complexity level of 10.
+max-complexity = 10
+
+[tool.poetry.dependencies]
+python = "^3.9"
+redis = "^5.0"
+aerich = "^0.7"
+tortoise-orm = { version = "^0.20", extras = ["asyncpg"] }
+python-jose = "^3.3"
+httpx = "^0.27"
+pydantic = "^2.6"
+pydantic-settings = "^2.1"
+fastapi = "^0.111"
+uvicorn = { version = "^0.25", extras = ["standard"] }
+sentry-sdk = "^2.1"
+prefect = "^2.16"
+lxml = "^4.9"
+aiogram = "^3"
+babel = "^2.15.0"
+
+[tool.poetry.dev-dependencies]
+ruff = "^0.1.9"
+coverage = "^7.3.0"
+mypy = "^1.5.1"
+pytest = "^7.4.0"
+pytest-asyncio = "^0.21.1"
+async-asgi-testclient = "^1.4.11"
+pytest-env = "^1.0.1"
+python-json-logger = "*"
+gunicorn = "*"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
