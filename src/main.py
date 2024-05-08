@@ -28,7 +28,7 @@ async def on_startup():
     await database.init()
 
 
-app = FastAPI(**app_configs, lifespan=lifespan)
+app = FastAPI(**app_configs, on_startup=on_startup, lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
