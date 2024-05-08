@@ -59,7 +59,6 @@ python = "^3.9"
 redis = "^5.0"
 aerich = "^0.7"
 tortoise-orm = { version = "^0.20", extras = ["asyncpg"] }
-python-jose = "^3.3"
 httpx = "^0.27"
 pydantic = "^2.6"
 pydantic-settings = "^2.1"
@@ -67,19 +66,11 @@ fastapi = "^0.111"
 uvicorn = { version = "^0.25", extras = ["standard"] }
 sentry-sdk = "^2.1"
 prefect = "^2.16"
-lxml = "^4.9"
 aiogram = "^3"
 babel = "^2.15.0"
 
 [tool.poetry.dev-dependencies]
 ruff = "^0.1.9"
-coverage = "^7.3.0"
-mypy = "^1.5.1"
-pytest = "^7.4.0"
-pytest-asyncio = "^0.21.1"
-async-asgi-testclient = "^1.4.11"
-pytest-env = "^1.0.1"
-python-json-logger = "*"
 gunicorn = "*"
 
 [build-system]
