@@ -30,4 +30,4 @@ RUN useradd -m -d /src -s /bin/bash app \
 
 USER app
 
-CMD ["./scripts/start-prod.sh"]
+ENTRYPOINT ["./scripts/start-prod.sh"]
