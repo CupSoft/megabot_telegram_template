@@ -32,11 +32,13 @@
 
 ## Web admin panel
 
+- Authentication through Telegram
 - FastApi Admin Panel
+- Close interactive documentation for unauthorized users
 
 ## Deployment
 
 - MetaBase
-  - Default requests
+  - Default requests and dashboards
 - Sentry
 - Prefect
