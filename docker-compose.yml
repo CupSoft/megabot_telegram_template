@@ -60,12 +60,14 @@ services:
     image: redis:6.2-alpine
     hostname: redis
     container_name: app_redis
+    environment:
+        - REDIS_PASSWORD=${REDIS_PASSWORD}
     command:
       - /bin/sh
       - -c
       - redis-server --requirepass "$${REDIS_PASSWORD:?REDIS_PASSWORD variable is not set}"
     ports:
-      - 36379:6379
+      - "36379:6379"
 
 
 volumes:
