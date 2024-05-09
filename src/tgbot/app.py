@@ -25,7 +25,7 @@ async def set_webhook(my_bot: Bot) -> None:
     current_webhook_info = await check_webhook()
 
     await bot.set_webhook(
-        f"https://{settings.SITE_DOMAIN}/webhook",
+        f"https://{settings.SITE_DOMAIN}/api/telegram/webhook/{settings.TELEGRAM_BOT_TOKEN.get_secret_value()}",
         secret_token=settings.TELEGRAM_BOT_WEBHOOK_SECRET.get_secret_value(),
         drop_pending_updates=current_webhook_info.pending_update_count > 0,
         max_connections=40,
