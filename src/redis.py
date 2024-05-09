@@ -7,12 +7,17 @@ from pydantic import BaseModel
 
 from src.config import settings
 
+logger = logging.getLogger(__name__)
 
-pool = aioredis.ConnectionPool.from_url(
-    str(settings.REDIS_URL), max_connections=10, decode_responses=True
+pool = aioredis.ConnectionPool(
+    host=settings.REDIS_HOST,
+    port=settings.REDIS_PORT,
+    db=settings.REDIS_DB,
+    password=settings.REDIS_PASSWORD.get_secret_value(),
+    max_connections=settings.REDIS_MAX_CONNECTIONS,
+    decode_responses=True,
 )
 redis_client = aioredis.Redis(connection_pool=pool)
-logger = logging.getLogger(__name__)
 
 
 class RedisData(BaseModel):

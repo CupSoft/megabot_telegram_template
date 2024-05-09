@@ -11,10 +11,10 @@ base_router.message.middleware(i18n.i18n_middleware)
 base_router.edited_message.middleware(logging.WnLoggingUserIdMiddleware)
 
 dp = Dispatcher()
-
 dp.include_router(base_router)
-
-bot = Bot(token=settings.TELEGRAM_BOT_TOKEN, parse_mode=ParseMode.HTML)
+bot = Bot(
+    token=settings.TELEGRAM_BOT_TOKEN.get_secret_value(), parse_mode=ParseMode.HTML
+)
 
 
 async def set_webhook(my_bot: Bot) -> None:
@@ -26,7 +26,7 @@ async def set_webhook(my_bot: Bot) -> None:
 
     await bot.set_webhook(
         f"https://{settings.SITE_DOMAIN}/webhook",
-        secret_token=settings.TELEGRAM_BOT_WEBHOOK_SECRET,
+        secret_token=settings.TELEGRAM_BOT_WEBHOOK_SECRET.get_secret_value(),
         drop_pending_updates=current_webhook_info.pending_update_count > 0,
         max_connections=40,
     )
@@ -47,4 +47,4 @@ async def start_telegram():
 
 
 async def process_event(bot: Bot, payload: dict) -> None:
-    await dp.feed_webhook_update(bot, Update(**payload))
+    await dp.feed_update(bot, Update(**payload))

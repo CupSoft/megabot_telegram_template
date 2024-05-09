@@ -1,6 +1,6 @@
 from typing import Any
 
-from pydantic import PostgresDsn, RedisDsn
+from pydantic import SecretStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 from src.constants import Environment
@@ -11,8 +11,17 @@ class Config(BaseSettings):
         env_file=".env", env_file_encoding="utf-8", extra="ignore"
     )
 
-    DATABASE_URL: PostgresDsn
-    REDIS_URL: RedisDsn
+    POSTGRES_USER: str
+    POSTGRES_PASSWORD: SecretStr
+    POSTGRES_DB: str
+    POSTGRES_HOST: str
+    POSTGRES_PORT: int
+
+    REDIS_PASSWORD: SecretStr
+    REDIS_HOST: str
+    REDIS_PORT: int
+    REDIS_DB: int
+
     REDIS_MAX_CONNECTIONS: int = 128
 
     SITE_DOMAIN: str = "myapp.com"
@@ -27,9 +36,9 @@ class Config(BaseSettings):
 
     APP_VERSION: str = "1"
 
-    TELEGRAM_BOT_TOKEN: str
+    TELEGRAM_BOT_TOKEN: SecretStr
     TELEGRAM_BOT_USERNAME: str
-    TELEGRAM_BOT_WEBHOOK_SECRET: str
+    TELEGRAM_BOT_WEBHOOK_SECRET: SecretStr
 
 
 settings = Config()

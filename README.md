@@ -11,7 +11,7 @@ Inspired by FastFoodMemes telegram bot
 
 ### First Build Only
 1. `cp .env.example .env`
-2. `docker network create ffmemes_network`
+2. `docker network create megabot_network`
 3. `docker-compose up -d --build`
 
 Don't forget to fill the local `.env` file with all envs you need.

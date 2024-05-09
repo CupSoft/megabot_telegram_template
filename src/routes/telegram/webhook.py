@@ -1,16 +1,18 @@
-from typing import Any
 import logging
+from typing import Any, Dict
+
+from aiogram.types import Update
 from fastapi import APIRouter, status
-from typing import Dict
 
 from src.config import settings
+from src.tgbot.app import bot, dp
 
-router = APIRouter(prefix="/telegram-webhook/")
+router = APIRouter()
 logger = logging.getLogger(__name__)
 
 
 @router.post(
-    f"/webhook/telegram/{settings.TELEGRAM_BOT_TOKEN}",
+    f"/webhook/{settings.TELEGRAM_BOT_TOKEN.get_secret_value()}",
     status_code=status.HTTP_200_OK,
     include_in_schema=False,
 )

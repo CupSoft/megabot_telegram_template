@@ -15,11 +15,15 @@ logging.getLogger("httpx").setLevel(logging.WARNING)
 
 
 if __name__ == "__main__":
-    pool = aioredis.ConnectionPool.from_url(
-        str(settings.REDIS_URL),
+    pool = aioredis.ConnectionPool(
+        host=settings.REDIS_HOST,
+        port=settings.REDIS_PORT,
+        db=settings.REDIS_DB,
+        password=settings.REDIS_PASSWORD.get_secret_value(),
         max_connections=settings.REDIS_MAX_CONNECTIONS,
         decode_responses=True,
     )
+
     redis.redis_client = aioredis.Redis(connection_pool=pool)
 
     localizer.localizations = localizer.load()

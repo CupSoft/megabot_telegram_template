@@ -1,34 +1,37 @@
+import logging
 from contextlib import asynccontextmanager
 from typing import AsyncGenerator
 
 import sentry_sdk
-from fastapi import BackgroundTasks, Depends, FastAPI, status
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from src import database, redis
 from src.config import app_configs, settings
-from src.tgbot.app import bot, process_event, start_telegram
-from src.tgbot.dependencies import validate_webhook_secret
+from src.routes import root_router
+from src.tgbot.app import start_telegram
+
+logger = logging.getLogger(__name__)
 
 
 @asynccontextmanager
 async def lifespan(_application: FastAPI) -> AsyncGenerator:
-    await start_telegram()
+    logger.info("Initializing database...")
+    await database.init()
 
+    logger.info("Initializing telegram stuff...")
+    await start_telegram()
     yield
 
     if settings.ENVIRONMENT.is_testing:
         return
 
     # Shutdown
+    logger.info("Disconnecting from redis...")
     await redis.pool.disconnect()
 
 
-async def on_startup():
-    await database.init()
-
-
-app = FastAPI(**app_configs, on_startup=on_startup, lifespan=lifespan)
+app = FastAPI(**app_configs, lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
@@ -45,24 +48,4 @@ if settings.ENVIRONMENT.is_deployed:
         environment=settings.ENVIRONMENT,
     )
 
-
-@app.get("/healthcheck", include_in_schema=False)
-async def healthcheck() -> dict[str, str]:
-    return {"status": "ok"}
-
-
-@app.post(
-    "/webhook",
-    dependencies=[Depends(validate_webhook_secret)],
-    status_code=status.HTTP_200_OK,
-    include_in_schema=False,
-)
-async def tgbot_webhook_events(
-    payload: dict,
-    worker: BackgroundTasks,
-) -> dict:
-    worker.add_task(process_event, payload=payload, bot=bot)
-
-    return {
-        "ok:": True,
-    }
+app.include_router(root_router)
